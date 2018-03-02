@@ -116,7 +116,8 @@ void ComDeviceEmulator::Listening()
 		
 		switch (d_emu) {
 			case (d_UIM)       : request = CatchRequest_UIM(); Log_AddRequest(request, false); break;
-			case (d_Regulator) : request = CatchRequest_Reg(); Log_AddRequest(request, true);  break;
+			//case (d_Regulator) : request = CatchRequest_Reg(); Log_AddRequest(request, true);  break;
+			case (d_Regulator) : request = CatchRequest_Reg(); Log_AddRequestHEX(request, false);  break;
 		}
 
 		if (!request.IsEmpty()) {
