@@ -16,9 +16,9 @@ bool ComDeviceEmulator::SendResponse_Reg(const String& request)
 	response += x_o_r;
 	
 	if (!d_com.Write(response)) {
-		AddError("SendResponse COM" + FormatInt(d_cfg.com.GetValue()), "Can't write response to com");
+		Log_AddError("SendResponse COM" + FormatInt(d_cfg.com.GetValue()), "Can't write response to com");
 		return false;
 	}
-	AddResponse(response, true);
+	Log_AddResponse(response, true);
 	return true;	
 }

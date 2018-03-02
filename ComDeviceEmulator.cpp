@@ -67,8 +67,8 @@ void ComDeviceEmulator::SetupByDevType()
 		d_com.SetEndMessageSymbol(0x0D);
 		d_com.SetHideEndMessageSymbol();
 		if (!LoadData_UIM()) {
-			AddLine("Данные для эмуляции", "Файл с данными не найден");
-			AddLine("Данные для эмуляции", "Поток данных - случайные числа");
+			Log_AddLine("Данные для эмуляции", "Файл с данными не найден");
+			Log_AddLine("Данные для эмуляции", "Поток данных - случайные числа");
 		}
 	}
 	if (d_emu == d_Regulator) {
@@ -90,7 +90,7 @@ bool ComDeviceEmulator::StartListening()
 	// 
 	ComClose();
 	if (!ComOpen()) {
-		AddError("StartListening", "Can't open COM" + FormatInt(d_cfg.com.GetValue()) + ": " + d_com.GetError());
+		Log_AddError("StartListening", "Can't open COM" + FormatInt(d_cfg.com.GetValue()) + ": " + d_com.GetError());
 		return false;
 	}	
 	// Переименовываем кнопку:
@@ -104,7 +104,7 @@ bool ComDeviceEmulator::StartListening()
 
 void ComDeviceEmulator::Listening()
 {
-	AddLine("Listening", "START");
+	Log_AddLine("Listening", "START");
 	String request;
 	for (;;){
 		Sleep(1);
@@ -115,17 +115,17 @@ void ComDeviceEmulator::Listening()
 		if (!d_com.IsAvailable()) { continue;   }
 		
 		switch (d_emu) {
-			case (d_UIM)       : request = CatchRequest_UIM(); AddRequest(request, false); break;
-			case (d_Regulator) : request = CatchRequest_Reg(); AddRequest(request, true);  break;
+			case (d_UIM)       : request = CatchRequest_UIM(); Log_AddRequest(request, false); break;
+			case (d_Regulator) : request = CatchRequest_Reg(); Log_AddRequest(request, true);  break;
 		}
 
 		if (!request.IsEmpty()) {
 			if (!SendResponse(request))
-				AddError("COM" + FormatInt(d_cfg.com.GetValue()), "Ответ не может быть отправлен");
+				Log_AddError("COM" + FormatInt(d_cfg.com.GetValue()), "Ответ не может быть отправлен");
 		}
 		request.Clear();
 	}
-	AddLine("Listening", "STOP");
+	Log_AddLine("Listening", "STOP");
 }
 
 bool ComDeviceEmulator::StopListening()

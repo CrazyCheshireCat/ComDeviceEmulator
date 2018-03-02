@@ -7,12 +7,12 @@ void ComDeviceEmulator::Log_Update(AttrText left_col, AttrText right_col)
 	wnd_log.GoEnd();
 }
 
-void ComDeviceEmulator::AddLine(String left_col, String right_col) 
+void ComDeviceEmulator::Log_AddLine(String left_col, String right_col) 
 {
 	Log_Update(AttrText(left_col), AttrText(right_col));
 }
 
-void ComDeviceEmulator::AddError(String left_col, String right_col)
+void ComDeviceEmulator::Log_AddError(String left_col, String right_col)
 {
 	Log_Update(AttrText(left_col).Ink(Red()), AttrText(right_col).Ink(Red()));
 }
@@ -27,7 +27,7 @@ static String ToBytesMes(const String& mes)
 	}
 	return nums;
 }
-void ComDeviceEmulator::AddRequest(String request, bool need_bytes)
+void ComDeviceEmulator::Log_AddRequest(String request, bool need_bytes)
 {
 	if (need_bytes)
 		request += (" [" + ToBytesMes(request) + "]");
@@ -35,7 +35,7 @@ void ComDeviceEmulator::AddRequest(String request, bool need_bytes)
 			   AttrText(request).Ink(Gray()));
 }
 
-void ComDeviceEmulator::AddRequestHEX(String request, bool need_bytes)
+void ComDeviceEmulator::Log_AddRequestHEX(String request, bool need_bytes)
 {
 	if (need_bytes)
 		request += (" [" + ToBytesMes(request) + "]");
@@ -44,7 +44,7 @@ void ComDeviceEmulator::AddRequestHEX(String request, bool need_bytes)
 
 }
 		
-void ComDeviceEmulator::AddResponse(String response, bool need_bytes)
+void ComDeviceEmulator::Log_AddResponse(String response, bool need_bytes)
 {
 	if (need_bytes)
 		response += (" [" + ToBytesMes(response) + "]");
@@ -52,7 +52,7 @@ void ComDeviceEmulator::AddResponse(String response, bool need_bytes)
 			   AttrText(response).Ink(Gray()))	;
 }
 
-void ComDeviceEmulator::AddResponseHEX(String response, bool need_bytes)
+void ComDeviceEmulator::Log_AddResponseHEX(String response, bool need_bytes)
 {
 	String resp;
 	if (need_bytes)

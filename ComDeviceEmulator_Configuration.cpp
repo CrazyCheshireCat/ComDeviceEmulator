@@ -4,7 +4,7 @@ bool ComDeviceEmulator::LoadConfig()
 {
 	String path = GetExeDirFile("comdeviceemulator.cfg");
 	if (!FileExists( path )) {
-		AddError("LoadConfig", "Can't find config file");
+		Log_AddError("LoadConfig", "Can't find config file");
 		return false;
 	}
 	try {
@@ -13,15 +13,15 @@ bool ComDeviceEmulator::LoadConfig()
 		Value  j_conf = ParseJSON(p);
 		
 		if (!d_cfg.SetJson(j_conf)) {
-			AddError("LoadConfig", "Bad config file");
-			AddError("LoadConfig - com config", d_cfg.GetConfigError());
+			Log_AddError("LoadConfig", "Bad config file");
+			Log_AddError("LoadConfig - com config", d_cfg.GetConfigError());
 			return false;
 		}
- 	} catch (CParser::Error) {
-		AddError("LoadConfig", "CParser::Error"); 
+	} catch (CParser::Error) {
+		Log_AddError("LoadConfig", "CParser::Error"); 
 		return false;
 	} catch (...) {
-		AddError("LoadConfig", "Unknown parser error"); 
+		Log_AddError("LoadConfig", "Unknown parser error"); 
 		return false;
 	}
 	return true;

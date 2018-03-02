@@ -37,12 +37,12 @@ public:
 		
 	void Listening();
 	
-	void AddLine(String left_col, String right_col);
-	void AddError(String left_col, String right_col);
-	void AddRequest(String request, bool need_bytes = false);
-	void AddRequestHEX(String request, bool need_bytes = false);
-	void AddResponse(String response, bool need_bytes = false);
-	void AddResponseHEX(String response, bool need_bytes = false);	
+	void Log_AddLine(String left_col, String right_col);
+	void Log_AddError(String left_col, String right_col);
+	void Log_AddRequest(String request, bool need_bytes = false);
+	void Log_AddRequestHEX(String request, bool need_bytes = false);
+	void Log_AddResponse(String response, bool need_bytes = false);
+	void Log_AddResponseHEX(String response, bool need_bytes = false);	
 	void Log_Update(AttrText left_col, AttrText right_col);
 protected:
 	EmuDevs      d_emu;

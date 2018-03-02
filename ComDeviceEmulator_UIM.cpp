@@ -3,7 +3,6 @@
 
 bool ComDeviceEmulator::LoadData_UIM()
 {
-	return false;
 	//Vector<int>            d_uim_nums;
 	//Vector<Vector<double>> d_uim_vals;
 	d_uim_nums.Add(1);
@@ -26,7 +25,7 @@ bool ComDeviceEmulator::LoadData_UIM()
 	// Первый столбец - время, следующие 7 * 2 столбцов - данные от УИМов
 	for (int i = 1; i < csv.GetCount_Row(); ++i) {
 		for (int j = 0; j < d_uim_vals.GetCount(); ++j) {
-			d_uim_vals[j].Add(csv.GetCell_Double(i, j));
+			d_uim_vals[j].Add(csv.GetCell_Double(i, j + 1));
 		}
 	}
 	if (d_uim_vals[0].GetCount() < 0) {
@@ -35,9 +34,10 @@ bool ComDeviceEmulator::LoadData_UIM()
 		return false;
 	}
 	
-	//d_uim_iter.SetCount(d_uim_vals.GetCount(), 0);
-	for (int i = 0; i < d_uim_vals.GetCount(); ++i)
-		d_uim_iter.Add(0);
+	d_uim_iter.SetCount(d_uim_vals.GetCount(), 0);
+	
+//	Log_AddLine("Arrays", FormatInt(d_uim_vals.GetCount()));
+//	Log_AddLine("Vals", FormatInt(d_uim_vals[0].GetCount()));
 	return true;
 }
 
@@ -74,11 +74,11 @@ bool ComDeviceEmulator::SendResponse_UIM(const String& request)
 	String response = GetResponseByRequest(request);
 	if (response.IsEmpty()) return false;
 	if (!d_com.Write(response)) {
-		AddError("SendResponse COM" + FormatInt(d_cfg.com.GetValue()), "Can't write response to com");
+		Log_AddError("SendResponse COM" + FormatInt(d_cfg.com.GetValue()), "Can't write response to com");
 		return false;
 	}
-	AddResponse(response);
-	return true;	
+	Log_AddResponse(response);
+	return true;
 }
 
 double ComDeviceEmulator::GetUimValue(int uim_num, int ch_num)
@@ -120,7 +120,7 @@ String ComDeviceEmulator::GetResponseByRequest(const String& request)
 	int uim_num = ScanInt(num_str, NULL, 16);
 	// Проверяем адрес:
 	if (!IsValidUimAddress(uim_num)) {
-		AddError("GetResponseByRequest COM" + FormatInt(d_cfg.com.GetValue()), "Invalid UIM number: " + FormatInt(uim_num));
+		Log_AddError("GetResponseByRequest COM" + FormatInt(d_cfg.com.GetValue()), "Invalid UIM number: " + FormatInt(uim_num));
 		return "";
 	}
 	String response;	
@@ -135,7 +135,7 @@ String ComDeviceEmulator::GetResponseByRequest(const String& request)
 					response  = ">";
 					response += num_str;
 					response += request[4];
-					response += FormatUimValue(GetUimValue(ScanInt(num_str), request[4] - '0'));//   GetRandomNumber();
+					response += FormatUimValue(GetUimValue(uim_num, request[4] - '0'));//   GetRandomNumber();
 				}
 			}
 		}
@@ -144,14 +144,14 @@ String ComDeviceEmulator::GetResponseByRequest(const String& request)
 			if (request[3] >= '0' || request[3] <= '6') {
 				response  = ">";
 				//response += GetRandomNumber();
-				response += FormatUimValue(GetUimValue(ScanInt(num_str), request[3] - '0'));
+				response += FormatUimValue(GetUimValue(uim_num, request[3] - '0'));
 			}
 			if (request[3] == '*') {
 				response  = ">";
 				response += num_str;
-				response += request[3];
+				//response += request[3];
 				for (int i = 0; i < 7; ++i) 
-					response += FormatUimValue(GetUimValue(ScanInt(num_str), request[3] - '0')); //response += GetRandomNumber();
+					response += FormatUimValue(GetUimValue(uim_num, i)); //response += GetRandomNumber();
 			}
 		} 
 	}
