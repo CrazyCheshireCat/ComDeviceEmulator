@@ -1,0 +1,5 @@
+LAYOUT(ComDeviceEmulatorLayout, 604, 268)
+	ITEM(Button, btn_start, HSizePosZ(0, 0).TopPosZ(0, 24))
+	ITEM(ArrayCtrl, wnd_log, HSizePosZ(0, 0).VSizePosZ(24, 0))
+END_LAYOUT
+

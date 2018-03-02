@@ -1,0 +1,5 @@
+#ifndef _ComDeviceEmulator_icpp_init_stub
+#define _ComDeviceEmulator_icpp_init_stub
+#include "CtrlLib/init"
+#include "SerialTalking/init"
+#endif
